@@ -1,8 +1,11 @@
 import type { Disease, Symptom } from './types'
+import { useSymptomStore } from './store/SymptomStore'
+
 import "./styles/DiseasePrediction.css"
 import "./styles/SymptomSection.css"
 import "./styles/DiseaseSection.css"
 import searchIcon from "./assets/icon/search.png" 
+import type { ChangeEvent } from 'react'
 
 const symptomList: Symptom[] = [
     {ename : "anxiety and nervousness", vname : "lo âu và bồn chồn", hasSymptom: false},
@@ -44,21 +47,28 @@ function SymptomSection(){
 }
 
 function SymptomSearchBar(){
+    const {setSymptomSearchTerm} = useSymptomStore()
+    function onSearchTermChange(e: ChangeEvent<HTMLInputElement>){
+        setSymptomSearchTerm(e.target.value)
+    }
+
     return (
         <div className='symptom-search-bar-container'>
             <form action="" className='symptom-search-bar-form'>
                 <img src={searchIcon} alt="" className='symptom-search-icon'/>
-                <input type="text" className='symptom-search-input'/>
+                <input type="text" className='symptom-search-input' onChange={onSearchTermChange}/>
             </form>
         </div>
     )
 }
 
 function SymptomList(){
+    const {symptomSearchTerm} = useSymptomStore()
     return (
         <div className='symptom-list-container'>
             {
             symptomList
+                .filter((v)=>{return v.vname.includes(symptomSearchTerm)})
                 .sort((a, b) => a.vname.localeCompare(b.vname))
                 .map(s=>{return <SymptomItem symptom={s} key={s.ename}></SymptomItem>})
             }
@@ -67,7 +77,6 @@ function SymptomList(){
 }
 
 function SymptomItem({symptom} : {symptom : Symptom}){
-    console.log(symptom)
     return (
         <div className={'symptom-item-container ' + (symptom.hasSymptom ? "active" : "")}>
             <div className='symptom-item'>
