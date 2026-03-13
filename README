@@ -1,0 +1,9 @@
+- Lần đầu chạy project thực hiện các lệnh sau : 
+    + "cd web && npm install"
+- Từ sau đó chỉ cần :
+    + "cd web" -> Di chuyển terminal vào folder web
+    + "npm run dev" -> Chạy vite 
+    + Vào [localhost](http://localhost:5173/) để xem web
+
+- Folder disease_predictor : Code python để dự đoán bệnh
+- Folder web : Code web

@@ -1,0 +1,38 @@
+/* Layout chính */
+.main-container {
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 40px;
+    /* Thêm background cho toàn bộ khung */
+    background: linear-gradient(145deg, #ffffff, #f0f4f8); 
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.main-container h2 {
+    color: #1a365d;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.disease-prediction-container {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr; /* Tỉ lệ bên trái rộng hơn chút */
+    gap: 40px;
+    align-items: start;
+}
+
+/* Responsive cho mobile */
+@media (max-width: 900px) {
+    .disease-prediction-container {
+        grid-template-columns: 1fr;
+    }
+    .main-container {
+        margin: 20px;
+        padding: 20px;
+    }
+}

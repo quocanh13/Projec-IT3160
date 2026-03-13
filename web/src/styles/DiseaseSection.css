@@ -1,0 +1,105 @@
+.disease-container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    /* Đảm bảo container không bị phình quá to khi danh sách dài */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Predict Button */
+.disease-predict-button-container {
+    margin-bottom: 25px;
+    text-align: center;
+    flex-shrink: 0; /* Giữ nút không bị co lại */
+}
+
+.disease-predict-button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+}
+
+.disease-predict-button:hover {
+    background: #218838;
+}
+
+/* --- PHẦN THÊM THANH CUỘN --- */
+.disease-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+    /* Thiết lập chiều cao tối đa và cho phép cuộn */
+    max-height: 450px; 
+    overflow-y: auto;
+    padding-right: 8px; /* Tránh nội dung đè lên thanh cuộn */
+}
+
+/* Tùy chỉnh giao diện thanh cuộn (Scrollbar) cho chuyên nghiệp hơn */
+.disease-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.disease-list-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.disease-list-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.disease-list-container::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+/* ---------------------------- */
+
+.disease-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #ffffff;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.disease-vname {
+    font-weight: 700;
+    color: #d9534f;
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.disease-ename {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin: 3px 0 0 0;
+    font-style: italic;
+}
+
+.disease-percent-risk {
+    background: #f1f2f6;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    color: #2c3e50;
+    min-width: 60px;
+    text-align: center;
+}
+
+/* Highlight những bệnh có rủi ro cao */
+.disease-item-container:first-child .disease-percent-risk {
+    background: #ffeaa7;
+    color: #d35400;
+}

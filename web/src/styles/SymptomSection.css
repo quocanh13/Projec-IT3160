@@ -1,0 +1,84 @@
+/* Container bao quanh danh sách */
+.symptom-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Tạo khoảng cách giữa các item */
+    max-height: 500px;
+    padding: 5px;
+    overflow-y: auto;
+}
+
+/* Style cơ bản cho mỗi item triệu chứng */
+.symptom-item-container {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.symptom-item-container:hover {
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Trạng thái ACTIVE khi hasSymptom = true */
+.symptom-item-container.active {
+    background: #e7f3ff;
+    border-color: #007bff;
+    position: relative;
+}
+
+/* Thêm một dấu tick hoặc điểm nhấn cho item đang active */
+.symptom-item-container.active::after {
+    content: "✓";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Style cho chữ bên trong */
+.symptom-vname {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+    text-transform: capitalize;
+}
+
+.symptom-ename {
+    margin: 4px 0 0 0;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* Style cho Search Bar (giữ nguyên hoặc tinh chỉnh nhẹ) */
+.symptom-search-bar-form {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 20px;
+}
+
+.symptom-search-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    opacity: 0.6;
+}
+
+.symptom-search-input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+}
