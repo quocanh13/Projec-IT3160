@@ -1,0 +1,216 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}   
+\usepackage{amssymb} 
+
+\begin{document}
+    \begin{center}
+        \LARGE \textbf{Logistic Regression}
+    \end{center}
+    Input: 
+    \[
+        X = 
+        \begin{bmatrix}
+            x_1 \\
+            x_2 \\
+            \vdots \\
+            x_n
+        \end{bmatrix}
+        (n \times 1)
+    \] 
+    Weight: 
+    \[
+        W = 
+        \begin{bmatrix}
+            w_1 \\
+            w_2 \\
+            \vdots \\
+            w_n
+        \end{bmatrix}
+        (n \times 1)
+    \]
+    Bias: $b$
+    \[
+        z = W^{T} \times X = \sum_{i = 1}^{n}\left(x_iw_i\right) + b
+    \]
+    Output:
+    \[
+        \begin{cases}
+            \hat{y} = P(y = 1 | x) = \sigma(z) \\
+            \hat{y} = P(y = 0 | x) = 1 - P(y = 1 | x) = 1 - \sigma(z)
+        \end{cases}
+        \Rightarrow \hat{y} = \sigma(z)^y(1 - \sigma(z))^(1-y)
+    \]
+    \[
+        L = -\ln\left(\hat{y}\right) 
+          = -\left( y.\ln\left(\sigma(z)\right) + (1-y).\ln\left(1-\sigma(z)\right)\right)
+    \]
+    Let: 
+    \[
+        h = \sigma(z)
+        \Rightarrow L = -\left( y.\ln\left(h\right) + (1-y).\ln\left(1-h\right)\right)
+    \]
+    We have:
+    \[
+        z = \sum_{i = 1}^{n}\left(x_iw_i\right) + b
+    \]
+    \[
+        h = \sigma(z)
+    \]
+    \[
+        L = -\left( y.\ln\left(h\right) + (1-y).\ln\left(1-h\right)\right)
+    \]
+    Gradient:
+    \[
+        \frac{\partial L}{\partial w_i} = 
+        \frac{\partial L}{\partial h}. 
+        \frac{\partial h}{\partial z}.
+        \frac{\partial z}{\partial w_i} =
+        \left(\frac{1-y}{1-h} - \frac{y}{h}\right) .
+        \sigma(z)(1-\sigma(z)) . x_i = 
+        (\sigma(z) - y).x_i
+    \]
+    \[
+        \frac{\partial L}{\partial b} = 
+        \frac{\partial L}{\partial h}. 
+        \frac{\partial h}{\partial z}.
+        \frac{\partial z}{\partial b} = 
+        \left(\frac{1-y}{1-h} - \frac{y}{h}\right) \cdot \sigma(z)(1-\sigma(z)) \cdot 1 =
+        (\sigma(z) - y)
+    \]
+    Matrix Form:
+    \[
+        \frac{\partial L}{\partial w} = 
+        \left(\sigma(W^{T} \times X)  - y\right)X
+    \]
+    \[
+        \frac{\partial L}{\partial b} = 
+        \left(\sigma(W^{T} \times X)  - y\right)
+    \]
+    \\ \\ \\ \\
+    \begin{center}
+        \LARGE \textbf{Batch/Minibatch Gradient Descent}
+    \end{center}
+    With $\mathcal{X}$ is the matrix $(m \times n)$ (m sample to train) : 
+    \[
+        \mathcal{X} = 
+        \begin{bmatrix}
+            X_1^{T} \\ X_2^{T} \\ \vdots \\ X_m^{T}
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            x_{1, 1} & x_{1, 2} & \hdots & x_{1, n} \\
+            x_{2, 1} & x_{2, 2} & \hdots & x_{2, n} \\
+            \hdots & \hdots & \hdots & \hdots \\
+            x_{m, 1} & x_{m, 2} & \hdots & x_{m, n} \\
+        \end{bmatrix} (m \times n)
+    \]
+    And label for each sample:
+    \[
+        \mathcal{Y} = 
+        \begin{bmatrix}
+            y_1 \\ y_2 \\ \vdots \\ y_m
+        \end{bmatrix} (m \times 1)
+    \]
+    We have the loss function is the average of loss of each sample:
+        \[
+            L = \frac{1}{m}\sum_{k=1}^{m}\left[
+                -\left( y_k\ln\left(h_k\right) + (1-y_k)\ln\left(1-h_k\right)\right)
+                \right]
+        \]
+    Thus:
+    \[
+        \frac{\partial L}{\partial w_i} = 
+        \frac{1}{m}\sum_{k=1}^{m}\left(
+            \frac{\partial L}{\partial h_k}
+            \frac{\partial h_k}{\partial z_k}
+            \frac{\partial z_k}{\partial w_i}
+        \right) = 
+        \frac{1}{m}\sum_{k=1}^{m}\left(
+            (\sigma(z_k) - y_k) \cdot x_{k,i} 
+        \right)
+    \]
+    \[
+        \frac{\partial L}{\partial b} = 
+        \frac{1}{m}\sum_{k=1}^{m}\left(
+            \frac{\partial L}{\partial h_k}
+            \frac{\partial h_k}{\partial z_k}
+            \frac{\partial z_k}{\partial b}
+        \right) = 
+        \frac{1}{m}\sum_{k=1}^{m}\left(
+            (\sigma(z_k) - y_k) \cdot 1 
+        \right) = 
+        \frac{1}{m}\sum_{k=1}^{m}\left(
+            \sigma(z_k) - y_k  
+        \right)
+    \]
+    We have:
+    \[
+        \sigma\left(\mathcal{X}W^{T} \right) - Y = 
+        \begin{bmatrix}
+            \sigma\left(X_1^{T}W\right) - y_1 \\
+            \sigma\left(X_2^{T}W\right) - y_2 \\
+            \vdots  \\
+            \sigma\left(X_m^{T}W\right) - y_m
+        \end{bmatrix} (m \times 1) = 
+        \begin{bmatrix}
+            \sigma\left(z_1\right) - y_1 \\
+            \sigma\left(z_2\right) - y_2 \\
+            \vdots  \\
+            \sigma\left(z_m\right) - y_m
+        \end{bmatrix} (m \times 1)
+    \]
+    Therefore:
+    \[
+        \mathcal{X}^{T}\left(\sigma\left(\mathcal{X}W\right) - Y \right) = 
+        \begin{bmatrix}
+            x_{1, 1} & x_{2, 1} & \hdots & x_{m, 1} \\
+            x_{1, 2} & x_{2, 2} & \hdots & x_{m, 2} \\
+            \hdots & \hdots & \hdots & \hdots \\
+            x_{1, n} & x_{2, n} & \hdots & x_{m, n} \\
+        \end{bmatrix} \times
+        \begin{bmatrix}
+            \sigma\left(z_1\right) - y_1 \\
+            \sigma\left(z_2\right) - y_2 \\
+            \vdots  \\
+            \sigma\left(z_m\right) - y_m
+        \end{bmatrix} = 
+    \]
+    \[
+        \begin{bmatrix}
+            sum_{k=1}^{m}\left(\sigma(z_k) - y_k\right)x_{k,1} \\
+            sum_{k=1}^{m}\left(\sigma(z_k) - y_k\right)x_{k,2} \\ 
+            \vdots  \\
+            sum_{k=1}^{m}\left(\sigma(z_k) - y_k\right)x_{k,n} \\ 
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            \frac{\partial L}{\partial w_1} \\
+            \frac{\partial L}{\partial w_2} \\ 
+            \vdots  \\
+            \frac{\partial L}{\partial w_n} \\ 
+        \end{bmatrix} (n \times 1)
+    \]
+    And 
+    \[
+        I^{T}\left(\sigma\left(\mathcal{X}W\right) - Y \right) = 
+        \begin{bmatrix}
+            1 & 1 & \hdots & 1 \\
+        \end{bmatrix} \times
+        \begin{bmatrix}
+            \sigma\left(z_1\right) - y_1 \\
+            \sigma\left(z_2\right) - y_2 \\
+            \vdots  \\
+            \sigma\left(z_m\right) - y_m
+        \end{bmatrix} = \sum_{k=1}^{m}\left(
+            \sigma(z_k) - y_k  
+        \right)
+    \]
+    Conclusion:
+    \[
+        \frac{\partial L}{\partial w} = 
+        \frac{1}{m}\mathcal{X}^{T}\left(\sigma\left(\mathcal{X}W\right) - Y \right)
+    \]
+    \[
+        \frac{\partial L}{\partial b} = 
+        \frac{1}{m}I^{T}\left(\sigma\left(\mathcal{X}W\right) - Y \right)
+    \]
+\end{document}

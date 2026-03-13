@@ -1,4 +1,4 @@
-disease_predictor/*.csv
+disease_predictor/data/*.csv
 
 # Logs
 logs

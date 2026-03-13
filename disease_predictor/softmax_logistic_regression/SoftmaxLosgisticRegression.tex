@@ -1,0 +1,302 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}   
+\usepackage{amssymb} 
+
+
+\begin{document}
+    \begin{center}
+        {\Large \textbf{SOFTMAX LOGISTIC REGRESSION}}
+    \end{center}
+    \section*{Definition:}
+    - Input:
+    \[
+        X = 
+        \begin{bmatrix}
+            x_1 \\
+            x_2 \\
+            \vdots \\
+            x_n
+        \end{bmatrix} (n \times 1)
+    \]
+    - Weight: 
+    \[
+        W = 
+        \begin{bmatrix}
+            w_{1, 1} & w_{1, 2} & \hdots & w_{1, n} \\
+            w_{2, 1} & w_{2, 2} & \hdots & w_{2, n} \\
+            \hdots & \hdots & \hdots & \hdots \\
+            w_{m, 1} & w_{m, 2} & \hdots & w_{m, n}
+        \end{bmatrix} (m \times n)
+    \]
+    - Bias: 
+    \[
+        B = 
+        \begin{bmatrix}
+            b_1 \\
+            b_2 \\
+            \vdots \\
+            b_m
+        \end{bmatrix} (m \times 1)
+    \]
+    - Let:
+    \[
+        z_i = \sum_{j = 1}^{n}w_{i, j}x_j + b_i
+    \]
+    - From that, we obtain matrix form:
+    \[
+        Z = WX + B
+    \]
+    - Softmax Function:
+    \[
+        \sigma_i = \frac{e^{z_i}}{\sum_{k = 1}^{m}e^{z_k}}
+    \]
+    - Label:
+    \[
+        Y = 
+        \begin{bmatrix}
+            y_1 \\
+            y_2 \\
+            \vdots \\
+            y_m
+        \end{bmatrix} (m \times 1)
+    \]
+    - Probability that $y_i = 1$ given X:
+    \[
+        p_i = \sigma_i = \frac{e^{z_i}}{\sum_{k = 1}^{m}e^{z_k}}
+    \]
+    - Loss function using cross-entropy:
+    \[
+        L = -\sum_{i = 1}^{m}y_i\ln\left(p_i\right)
+    \]
+    \section*{Gradient:}  
+    - As defined in the above section, we have:
+    \[
+        z_i = \sum_{j = 1}^{n}w_{i, j}x_j + b_i
+    \]
+    \[
+        p_i = \frac{e^{z_i}}{\sum_{k = 1}^{m}e^{z_k}}
+    \]
+    \[
+        L = -\sum_{i = 1}^{m}y_i\ln\left(p_i\right)
+    \]
+    - Derivative of $z_i$ respect to $w_{i, j}$:
+    \[
+        \frac{\partial z_i}{\partial w_{i, j}} = x_j
+    \]
+    - Derivative of $p_k$ respect to $z_i$:
+    \[
+        \frac{\partial p_k}{\partial z_i} = 
+        \begin{cases}
+            p_i(1-p_i), \ \ \ i = k \\
+            -p_kp_i, \ \ \ \ \ \ \ \ i \neq  k
+        \end{cases}
+    \]
+    - Derivative of $L$ with respect to $p_k$ :
+    \[
+        \frac{\partial L}{\partial p_k} = 
+        \frac{-y_k}{p_k}
+    \]
+    - Therefore, derivative of $L$ with respect to $w_{i, j}$ :
+    \[
+        \frac{\partial L}{\partial w_{i, j}} = 
+        \sum_{k = 1}^{m}\left(
+            \frac{\partial L}{\partial p_k}
+            \frac{\partial p_k}{\partial z_i}
+            \frac{\partial z_i}{\partial w_{i, j}}
+        \right) =
+        \left(
+            \frac{-y_i}{p_i}p_i(1-p_i) + 
+            \sum_{k \neq i}\left(\frac{-y_k}{p_k}(-p_kp_i)\right)
+        \right) x_j
+    \]
+    \[
+        = \left(
+            -y_i(1-p_i) + \sum_{k \neq i}y_kp_i
+        \right)x_j = 
+        \left(
+            -y_i + y_ip_i + \sum_{k \neq i}y_kp_i
+        \right)x_j = 
+        \left(
+            -y_i + p_i\sum_{k = 1}^{m}y_k
+        \right)x_j
+    \]
+    - In the matrix $Y$ we only have one label is 1, so $\sum_{k = 1}^{m}y_k = 1$ 
+    \[
+        \Rightarrow \left(
+            -y_i + p_i\sum_{k = 1}^{m}y_k
+        \right)x_j = (p_i - y_i)x_j
+    \]
+    - Conclusion:
+    \[
+        \frac{\partial L}{\partial w_{i, j}} = (p_i - y_i)x_j
+    \]
+    \[
+        \frac{\partial L}{\partial b_i} = p_i - y_i
+    \]
+    \subsection*{Matrix Form:}
+    - As we defined in the above section: \\
+    Input:
+    \[
+        X = 
+        \begin{bmatrix}
+            x_1 \\
+            x_2 \\
+            \vdots \\
+            x_n
+        \end{bmatrix} (n \times 1)
+    \]
+    Weight: 
+    \[
+        W = 
+        \begin{bmatrix}
+            w_{1, 1} & w_{1, 2} & \hdots & w_{1, n} \\
+            w_{2, 1} & w_{2, 2} & \hdots & w_{2, n} \\
+            \hdots & \hdots & \hdots & \hdots \\
+            w_{m, 1} & w_{m, 2} & \hdots & w_{m, n}
+        \end{bmatrix} (m \times n)
+    \]
+    Bias: 
+    \[
+        B = 
+        \begin{bmatrix}
+            b_1 \\
+            b_2 \\
+            \vdots \\
+            b_m
+        \end{bmatrix} (m \times 1)
+    \]
+    Label:
+    \[
+        Y = 
+        \begin{bmatrix}
+            y_1 \\
+            y_2 \\
+            \vdots \\
+            y_m
+        \end{bmatrix} (m \times 1)
+    \]
+    We have probability matrix:
+    \[
+        P = \begin{bmatrix}
+            p_1 \\
+            p_2 \\
+            \vdots \\
+            p_m
+        \end{bmatrix} (m \times 1)
+    \]
+    Thus, we obtain: 
+    \[
+        \frac{\partial L}{\partial w} = (P - Y)X^T = 
+        \begin{bmatrix}
+            p_1 - y_1 \\
+            p_2 - y_2 \\
+            \vdots \\
+            p_m - y_m
+        \end{bmatrix}
+        \begin{bmatrix}
+            x_1 & x_2 & \hdots & x_n
+        \end{bmatrix}
+    \]
+    \[
+        = \begin{bmatrix}
+            (p_1 - y_1)x_1 & (p_1 - y_1)x_2 & \hdots & (p_1 - y_1)x_n \\
+            (p_2 - y_2)x_1 & (p_2 - y_2)x_2 & \hdots & (p_2 - y_2)x_n \\
+            \hdots & \hdots & \hdots & \hdots \\
+            (p_m - y_m)x_1 & (p_m - y_m)x_2 & \hdots & (p_m - y_m)x_n \\
+        \end{bmatrix}
+    \]
+    \[
+        \frac{\partial L}{\partial B} = P - Y
+    \]
+    \section*{Batch/Mini-batch Gradient Descent}
+    - Input: 
+    \[
+        X = \begin{bmatrix}
+            x_{1, 1} & x_{1, 2} & \hdots & x_{1, n} \\
+            x_{2, 1} & x_{2, 2} & \hdots & x_{2, n} \\
+            \hdots & \hdots & \hdots & \hdots \\
+            x_{q, 1} & x_{q, 2} & \hdots & x_{q, n} \\
+        \end{bmatrix} (q \times n)
+    \]
+    (q is the number of samples)\\
+    - Weight: 
+    \[
+        W = 
+        \begin{bmatrix}
+            w_{1, 1} & w_{1, 2} & \hdots & w_{1, n} \\
+            w_{2, 1} & w_{2, 2} & \hdots & w_{2, n} \\
+            \hdots & \hdots & \hdots & \hdots \\
+            w_{m, 1} & w_{m, 2} & \hdots & w_{m, n}
+        \end{bmatrix} (m \times n)
+    \]
+    - Bias: 
+    \[
+        B = 
+        \begin{bmatrix}
+            b_1 \\
+            b_2 \\
+            \vdots \\
+            b_m
+        \end{bmatrix} (m \times 1)
+    \]
+    - Label:
+    \[
+        Y = 
+        \begin{bmatrix}
+            y_{1, 1} & y_{1, 2} & \hdots & y_{1, m} \\
+            y_{2, 1} & y_{2, 2} & \hdots & y_{2, m} \\
+            \hdots & \hdots & \hdots & \hdots \\
+            y_{q, 1} & y_{q, 2} & \hdots & y_{q, m}
+        \end{bmatrix} (q \times m)
+    \]
+    - Z matrix:
+    \[
+        z_{s, i} = \sum_{j = 1}^{n}w_{i, j}x_{s, j} + b_i
+    \]
+    \[
+        Z = XW^T + B^T \ \ (q \times m)
+    \]
+    - P matrix:
+    \[
+        p_{s, i} = \frac{e^{z_{s, i}}}{\sum_{k = 1}^{m}e^{z_{s, k}}} \\  
+    \]
+    \[
+        P = \sigma(Z) \ \ (q \times m)
+    \]
+    - Loss function:
+    \[
+        C = \frac{1}{q}\sum_{k = 1}^{q}L_k
+    \]
+    ($L$ is the loss function defined in the above section)\\
+    - We have derivative of $C$ respect to $W_{i, j}$:
+    \[
+        \frac{\partial C}{\partial w_{i, j}} = 
+        \frac{1}{q}\sum_{s = 1}^{q}\frac{\partial L_s}{\partial w_{i, j}} = 
+        \frac{1}{q}\sum_{s = 1}^{q}(p_{s, i} - y_{s, i})x_{s, j}
+    \] 
+    \[
+        P - Y = \begin{bmatrix}
+            p_{1, 1} - y_{1, 1} & p_{1, 2} - y_{1, 2} & \hdots & p_{1, m} - y_{1, m} \\
+            p_{2, 1} - y_{2, 1} & p_{2, 2} - y_{2, 2} & \hdots & p_{2, m} - y_{2, m} \\
+            \hdots  & \hdots  & \hdots & \hdots  \\
+            p_{q, 1} - y_{q, 1} & p_{q, 2} - y_{q, 2} & \hdots & p_{q, m} - y_{q, m} \\
+        \end{bmatrix} (q \times m)
+    \]
+    \[
+        \Rightarrow (P - Y)^T = \begin{bmatrix}
+            p_{1, 1} - y_{1, 1} & p_{2, 1} - y_{2, 1} & \hdots & p_{q, 1} - y_{q, 1} \\
+            p_{1, 2} - y_{1, 2} & p_{2, 2} - y_{2, 2} & \hdots & p_{q, 2} - y_{q, 2} \\
+            \hdots  & \hdots  & \hdots & \hdots  \\
+            p_{1, m} - y_{1, m} & p_{2, m} - y_{2, m} & \hdots & p_{q, m} - y_{q, m} \\
+        \end{bmatrix} (m \times q)
+    \]
+    Therefore:
+    \[
+        \frac{\partial C}{\partial W} = \frac{1}{q}(P - Y)^TX = 
+        \left[\frac{1}{q}\sum_{s = 1}^{q}(p_{s, i} - y_{s, i})x_{s, j}\right] (m \times n)
+    \]
+    \[
+        \frac{\partial C}{\partial B} =  \frac{1}{q}(P - Y)^T1^{q \times 1}
+    \]
+\end{document}
