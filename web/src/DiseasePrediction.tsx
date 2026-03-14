@@ -68,7 +68,7 @@ function SymptomList(){
         <div className='symptom-list-container'>
             {
             symptomList
-                .filter((v)=>{return v.vname.includes(symptomSearchTerm)})
+                .filter((v)=>{return v.vname.toLowerCase().includes(symptomSearchTerm.toLowerCase())})
                 .sort((a, b) => a.vname.localeCompare(b.vname))
                 .map(s=>{return <SymptomItem symptom={s} key={s.ename}></SymptomItem>})
             }
@@ -80,7 +80,7 @@ function SymptomItem({symptom} : {symptom : Symptom}){
     return (
         <div className={'symptom-item-container ' + (symptom.hasSymptom ? "active" : "")}>
             <div className='symptom-item'>
-                <p className='symptom-vname'>{symptom.vname}</p>
+                <p className='symptom-vname'>{symptom.vname.toLocaleUpperCase()}</p>
                 <p className='symptom-ename'>{symptom.ename}</p>
             </div>
         </div>
