@@ -1,5 +1,7 @@
 import numpy as np
 from datetime import datetime
+from data.get_data import train_data, test_data
+
 class SoftmaxLogisticRegression:
     @staticmethod
     def softmax_matrix(Z):
@@ -14,14 +16,39 @@ class SoftmaxLogisticRegression:
         exp_Z = np.exp(Z - max_z)
         return exp_Z / np.sum(exp_Z)
 
-    def __init__(self, m: int, n: int):
-        self._W = np.zeros((m, n))
-        self._B = np.zeros((m, 1))
+    def __init__(
+        self, 
+        m: int, 
+        n: int, 
+        mean: np.ndarray, 
+        std: np.ndarray, 
+        weight: np.ndarray | None = None, 
+        bias: np.ndarray | None = None
+    ):
+        if(weight is None):
+            self._W = np.zeros((m, n))
+        else:
+            a, b = weight.shape
+            if(a != m or b != n):
+                print(a, b, m, n)
+                raise Exception("Kích thước của weight không đúng")
+            else:
+                self._W = weight.copy()
+        
+        if(bias is None):
+            self._B = np.zeros((m, 1))
+        else:
+            a, b = bias.shape
+            if(a != m or b != 1):
+                raise Exception("Kích thước của bias không đúng")
+            else:
+                self._B = bias.copy()
+        
+        self._first_train = True
         self._m = m
         self._n = n
-        self._mean = np.zeros((n))
-        self._std = np.zeros((n))
-        self._total_sample = 0
+        self._mean = mean.copy()
+        self._std = std.copy()
 
     def train(
         self, 
@@ -47,6 +74,8 @@ class SoftmaxLogisticRegression:
         n = self._n
         W = self._W
         B = self._B
+        mean = self._mean
+        std = self._std
         q, x_col = X.shape
         y_len,  = Y.shape
         cw_row, = class_weight.shape
@@ -59,24 +88,14 @@ class SoftmaxLogisticRegression:
             raise Exception("Sai kích thước class_weight")
         
         C = class_weight[Y].reshape((q, 1))
-        
-        total_sample = self._total_sample 
-        mean = self._mean*total_sample + q*X.mean(axis=0)
-        std = (self._std*total_sample + q*X.std(axis=0))
-        total_sample += q
-        mean /= total_sample
-        std /= total_sample
         X = (X - mean) / (std + 1e-8) 
-        
-        self._mean = mean
-        self._std = std
-        self._total_sample = total_sample
         
         pre_loss = 1e9
         for i in range(epoch):
             start_time = datetime.now()
             
-            P = self.softmax_matrix(X@W.T + B.T)
+            Z = X@W.T + B.T
+            P = self.softmax_matrix(Z)
             loss = -(C.flatten() * np.log(P[np.arange(q), Y] + 1e-12)).mean()
             pred = np.argmax(P, axis=1)
             accuracy = np.mean(pred == Y)
@@ -87,6 +106,7 @@ class SoftmaxLogisticRegression:
             
             self._W -= alpha*grad_W
             self._B -= alpha*grad_B
+            print("Max grad_W", np.max(grad_W))
             end_time = datetime.now()
             
             if(print_res):
@@ -95,10 +115,15 @@ class SoftmaxLogisticRegression:
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         X = (X - self._mean) / (self._std + 1e-8)
-        return self.softmax_matrix(X @ self._W.T + self._B.T)
+        Z = X @ self._W.T + self._B.T
+        res = self.softmax_matrix(Z)
+        return res
 
-import numpy as np
-
+    def get_weight(self)->list[list[float]]:
+        return self._W.tolist()
+    
+    def get_bias(self)->list[list[float]]:
+        return self._B.tolist()
 # X = np.array([
 #     [1.60, 60.0],
 #     [1.70, 62.5],

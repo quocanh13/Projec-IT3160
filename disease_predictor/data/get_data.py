@@ -33,11 +33,25 @@ def get_data_logistic() -> tuple[list[list[float]], list[list[float]]]:
         
         return training, test
 
-def get_weight(type: Literal["softmax", "logistic"]) -> list[dict["weight" : list[list[float]], "bias" : float]]:
+def get_weight(type: Literal["softmax", "logistic", "softmax_new"]) -> list[dict["weight" : list[list[float]], "bias" : float]]:
     with open(f"./data/{type}_weight.json") as file:
         data = json.load(file)
         return data
 
+def check(i: int, j: int):
+    s = 0
+    c_i = 0
+    c_j = 0
+    for k in range(377):
+        if(test_data[i][0][k] == 1):
+            c_i += 1
+        if(test_data[j][0][k] == 1):
+            c_j += 1
+        if(test_data[i][0][k] == test_data[j][0][k] == 1):
+            s += 1
+    print(c_i, c_j, s)
+
 train_data, test_data = get_data_logistic()
+# check(501, 1)
 # print(train_data[3][0])
 # print(train_data[210][0])
