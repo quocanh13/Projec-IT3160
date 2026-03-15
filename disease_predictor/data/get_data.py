@@ -1,7 +1,7 @@
 import csv
 import math
 import json
-from data.data_creation import data_info
+from data.data_creation import data_info, symptoms_list
 from typing import Literal
 
 def get_data_logistic() -> tuple[list[list[float]], list[list[float]]]:
@@ -51,7 +51,16 @@ def check(i: int, j: int):
             s += 1
     print(c_i, c_j, s)
 
+def get_symtom(i : int):
+    print(data_info[i])
+    for k in range(377):
+        if(train_data[i][0][k] == 1):
+            print(symptoms_list[k][0], symptoms_list[k][1])
+    
 train_data, test_data = get_data_logistic()
+
+get_symtom(481)
+    
 # check(501, 1)
 # print(train_data[3][0])
 # print(train_data[210][0])

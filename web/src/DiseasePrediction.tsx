@@ -1,29 +1,13 @@
 import type { Disease, Symptom } from './types'
-import { useSymptomStore } from './store/SymptomStore'
+import { useSymptomStore } from './store/symptomStore'
+import {softmax_predict} from "./api/predict"
 
 import "./styles/DiseasePrediction.css"
 import "./styles/SymptomSection.css"
 import "./styles/DiseaseSection.css"
 import searchIcon from "./assets/icon/search.png" 
 import type { ChangeEvent } from 'react'
-
-const symptomList: Symptom[] = [
-    {ename : "anxiety and nervousness", vname : "lo âu và bồn chồn", hasSymptom: false},
-    {ename : "depression", vname : "trầm cảm", hasSymptom: true},
-    {ename : "shortness of breath", vname : "khó thở", hasSymptom: false},
-    {ename : "depressive or psychotic symptoms", vname : "triệu chứng trầm cảm hoặc loạn thần", hasSymptom: true},
-    {ename : "sharp chest pain", vname : "đau ngực nhói", hasSymptom: false},
-    {ename : "dizziness", vname: "chóng mặt", hasSymptom: true},
-    {ename : "insomnia", vname: "mất ngủ", hasSymptom: true}
-]
-const diseaseList: Disease[] = [
-    {ename : 'panic disorder', vname : 'rối loạn hoảng sợ', riskPercent: 0.68},
-    {ename : 'vocal cord polyp', vname : 'polyp dây thanh quản', riskPercent: 0.0},
-    {ename : 'turner syndrome', vname : 'hội chứng turner', riskPercent: 0.99},
-    {ename : 'cryptorchidism', vname : 'tinh hoàn ẩn', riskPercent: 0.0},
-    {ename : 'fracture of the hand', vname : 'gãy xương bàn tay', riskPercent: 0.36},
-    {ename : 'cellulitis or abscess of mouth', vname : 'viêm mô tế bào hoặc áp xe miệng', riskPercent: 0.76}
-]
+import { useDiseaseStore } from './store/diseaseStore'
 
 export function DiseasePrediction() {
   return (
@@ -47,7 +31,7 @@ function SymptomSection(){
 }
 
 function SymptomSearchBar(){
-    const {setSymptomSearchTerm} = useSymptomStore()
+    const {setSymptomSearchTerm, resetSymptom} = useSymptomStore()
     function onSearchTermChange(e: ChangeEvent<HTMLInputElement>){
         setSymptomSearchTerm(e.target.value)
     }
@@ -58,11 +42,13 @@ function SymptomSearchBar(){
                 <img src={searchIcon} alt="" className='symptom-search-icon'/>
                 <input type="text" className='symptom-search-input' onChange={onSearchTermChange}/>
             </form>
+            <button className='symptom-reset-button' onClick={resetSymptom}>Reset</button>
         </div>
     )
 }
 
 function SymptomList(){
+    const {symptomList} = useSymptomStore()
     const {symptomSearchTerm} = useSymptomStore()
     return (
         <div className='symptom-list-container'>
@@ -70,15 +56,20 @@ function SymptomList(){
             symptomList
                 .filter((v)=>{return v.vname.toLowerCase().includes(symptomSearchTerm.toLowerCase())})
                 .sort((a, b) => a.vname.localeCompare(b.vname))
-                .map(s=>{return <SymptomItem symptom={s} key={s.ename}></SymptomItem>})
+                .map(s=>{return <SymptomItem symptom={s} key={s.id}></SymptomItem>})
             }
         </div>
     )
 }
 
 function SymptomItem({symptom} : {symptom : Symptom}){
+    const {toggleSymptom} = useSymptomStore()
+    function onClickSymptom(){
+        toggleSymptom(symptom.id)
+    }
+
     return (
-        <div className={'symptom-item-container ' + (symptom.hasSymptom ? "active" : "")}>
+        <div className={'symptom-item-container ' + (symptom.hasSymptom ? "active" : "")} onClick={onClickSymptom}>
             <div className='symptom-item'>
                 <p className='symptom-vname'>{symptom.vname.toLocaleUpperCase()}</p>
                 <p className='symptom-ename'>{symptom.ename}</p>
@@ -88,10 +79,19 @@ function SymptomItem({symptom} : {symptom : Symptom}){
 }
 
 function DiseaseSection(){
+    const {getHasSymptomList} = useSymptomStore()
+    const {setRiskPercent} = useDiseaseStore()
+    async function onClickPredict(){
+        const symptomList = getHasSymptomList()
+        const res = await softmax_predict(symptomList)
+        console.log(res)
+        setRiskPercent(res)
+    }
+
     return (
         <div className='disease-container'>
             <div className='disease-predict-button-container'>
-                <button className='disease-predict-button'>Predict Disease</button>
+                <button className='disease-predict-button' onClick={onClickPredict}>Predict Disease</button>
             </div>
             <DiseaseList></DiseaseList>
         </div>
@@ -99,13 +99,14 @@ function DiseaseSection(){
 }
 
 function DiseaseList() {
+    const {diseaseList} = useDiseaseStore()
     return (
         <div className='disease-list-container'>
             {
-            diseaseList
+            [...diseaseList]
                 .sort((a, b) => b.riskPercent - a.riskPercent)
                 .map(d => (
-                    <DiseaseItem disease={d} key={d.ename} />
+                    <DiseaseItem disease={d} key={d.id} />
                 ))}
         </div>
     )

@@ -783,7 +783,7 @@ data_info = [
 symptoms_list = [
     ("anxiety and nervousness", "lo âu và bồn chồn", 0.0),
     ("depression", "trầm cảm", 0.0),
-    ("shortness of breath", "khó thở", 0.0),
+    ("shortness of breath", "khó thở / hụt hơi", 0.0),
     ("depressive or psychotic symptoms", "triệu chứng trầm cảm hoặc loạn thần", 0.0),
     ("sharp chest pain", "đau ngực nhói", 0.0),
     ("dizziness", "chóng mặt", 0.0),
@@ -1240,6 +1240,7 @@ def get_class_weight():
     for (_, v, _) in data_info:
         res.append(2/math.sqrt(v))
     print(res)
+
 
 # create_data()
 # print(get_training_size())

@@ -1,4 +1,5 @@
 export interface Symptom{
+    id: number,
     /**Vietnamese name of the symptom*/
     vname: string,
 
@@ -10,12 +11,13 @@ export interface Symptom{
 }
 
 export interface Disease {
-  /** Vietnamese name of the disease */
-  vname: string
+    id: number,
+    /** Vietnamese name of the disease */
+    vname: string
 
-  /** English name of the disease */
-  ename: string
+    /** English name of the disease */
+    ename: string
 
-  /** Risk percentage predicted by the model */
-  riskPercent: number
+    /** Risk percentage predicted by the model */
+    riskPercent: number
 }
