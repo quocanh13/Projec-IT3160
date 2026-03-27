@@ -3,7 +3,11 @@
 - Từ sau đó chỉ cần :
     + "cd web" -> Di chuyển terminal vào folder web
     + "npm run dev" -> Chạy vite 
-    + Vào [localhost](http://localhost:5173/) để xem web
+    + Vào [localhost](http://localhost:5000/) để xem web
+
+- Chạy backend server python:
+    + cd disease_predictor
+    + python -m server.server
 
 - Folder disease_predictor : Code python để dự đoán bệnh
 - Folder web : Code web

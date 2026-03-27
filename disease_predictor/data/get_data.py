@@ -59,7 +59,7 @@ def get_symtom(i : int):
     
 train_data, test_data = get_data_logistic()
 
-get_symtom(481)
+# get_symtom(481)
     
 # check(501, 1)
 # print(train_data[3][0])

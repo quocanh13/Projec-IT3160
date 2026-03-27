@@ -775,7 +775,7 @@ data_info = [
     ('white blood cell disease', 504, 'bệnh bạch cầu'),
     ('kaposi sarcoma', 24, 'sarcoma kaposi'),
     ('spondylolisthesis', 673, 'trượt đốt sống'),
-    ('pseudTumor cerebri', 48, 'giả u não'),
+    ('pseudtumor cerebri', 48, 'giả u não'),
     ('conjunctivitis due to virus', 681, 'viêm kết mạc do virus'),
 ]
 

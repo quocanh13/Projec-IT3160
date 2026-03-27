@@ -39,7 +39,7 @@ def train(write_weight = False):
         np.array(param["weight"]), 
         np.array(param["bias"])
     )
-    predictor.train(X, Y, np.array(class_weight), epoch=30, alpha=100, print_res=True)
+    predictor.train(X, Y, np.array(class_weight), epoch=10, alpha=50, print_res=True)
     if(write_weight):
         print("Writing")
         with open("./data/softmax_new_weight.json", "w") as file:

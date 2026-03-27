@@ -1,0 +1,6 @@
+*.csv
+__pycache__/
+softmax_logistic_regression/
+softmax_logistic_regression_new/
+softmax_logistic_regression_scikit_learn/
+data/

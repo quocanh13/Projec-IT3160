@@ -1,5 +1,5 @@
 export async function softmax_predict(symptom: number[]) : Promise<number[]> {
-    const res = await fetch("http://localhost:5000/softmax", {
+    const res = await fetch("http://localhost:5100/softmax", {
         method : "POST",
         headers : {
             "content-type" : "application/json"
