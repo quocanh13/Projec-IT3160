@@ -32,6 +32,70 @@
     background: #218838;
 }
 
+/* Container bọc ngoài cho phần chọn thuật toán */
+.disease-predict-algorithm-selection-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Đẩy title sang trái, select sang phải */
+    padding: 12px 15px;
+    background: #f8fafc; /* Màu nền nhẹ để phân biệt với danh sách bệnh */
+    border-radius: 10px;
+    border: 1px solid #edf2f7;
+    margin-bottom: 20px;
+}
+
+/* Container chứa text "Algorithm :" */
+.disease-predict-algorithm-selection-title-container {
+    flex-shrink: 0;
+}
+
+.disease-predict-algorithm-selection-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Style cho form và thẻ select */
+.disease-predict-algorithm-selection-form {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#algoritm-selection {
+    width: 200px; /* Độ rộng cố định hoặc dùng max-width */
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    font-weight: 500;
+    color: #334155;
+    background-color: white;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+    
+    /* Custom mũi tên cho select */
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 14px;
+    padding-right: 30px;
+}
+
+#algoritm-selection:hover {
+    border-color: #cbd5e1;
+    background-color: #fff;
+}
+
+#algoritm-selection:focus {
+    border-color: #28a745; /* Màu xanh lá tông xoẹt tông với nút Predict */
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
 /* --- PHẦN THÊM THANH CUỘN --- */
 .disease-list-container {
     display: flex;

@@ -6,7 +6,7 @@ from softmax_logistic_regression_new.softmax_logsictic_regression import predict
 
 server = Flask(__name__)
 CORS(server)
-
+# python -m server.server
 @server.route("/predict", methods=["POST"])
 def predict():
     #Hàm predict nhận vào một list là danh sách triệu chứng (0 / 1 : không / có triệu chứng) và trả về một list[float] là tỷ lệ các bệnh

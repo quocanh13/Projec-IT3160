@@ -1,5 +1,7 @@
 - Lần đầu chạy project thực hiện các lệnh sau : 
     + "cd web && npm install"
+    + "python -m pip install flask flask-cors pandas"
+    
 - Từ sau đó chỉ cần :
     + "cd web" -> Di chuyển terminal vào folder web
     + "npm run dev" -> Chạy vite 

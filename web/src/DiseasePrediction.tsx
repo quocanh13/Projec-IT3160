@@ -79,19 +79,34 @@ function SymptomItem({symptom} : {symptom : Symptom}){
 }
 
 function DiseaseSection(){
-    const {getHasSymptomList} = useSymptomStore()
-    const {setRiskPercent} = useDiseaseStore()
+    const {setRiskPercent, setModel} = useDiseaseStore()
     async function onClickPredict(){
-        const symptomList = getHasSymptomList()
-        const res = await softmax_predict(symptomList)
+        const res = await softmax_predict()
         console.log(res)
         setRiskPercent(res)
+    }
+
+    function onChangeModel(e : React.ChangeEvent<HTMLSelectElement>){
+        setModel(e.target.value)
     }
 
     return (
         <div className='disease-container'>
             <div className='disease-predict-button-container'>
-                <button className='disease-predict-button' onClick={onClickPredict}>Predict Disease</button>
+                <button className='disease-predict-button' onClick={onClickPredict}>Predict</button>
+            </div>
+            <div className='disease-predict-algorithm-selection-container'>
+                <div className='disease-predict-algorithm-selection-title-container'>
+                    <p className='disease-predict-algorithm-selection-title'>Model Selection: </p>
+                </div>
+                <form className='disease-predict-algorithm-selection-form'>
+                    <select name="algoritm-selection" id="algoritm-selection" onChange={onChangeModel}>
+                        <option value="softmax logistic">Softmax Logistic Regression</option>
+                        <option value="naive bayes">Naive Bayes</option>
+                        <option value="svm">Support Vector Machine</option>
+                        <option value="neural network">Neural Network</option>
+                    </select>
+                </form>
             </div>
             <DiseaseList></DiseaseList>
         </div>
