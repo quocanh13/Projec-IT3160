@@ -1,6 +1,7 @@
 import numpy as np
 from datetime import datetime
-from data.get_data import train_data, test_data
+from data.get_data import get_weight
+from data.data_creation import mean, std
 
 class SoftmaxLogisticRegression:
     @staticmethod
@@ -124,39 +125,18 @@ class SoftmaxLogisticRegression:
     
     def get_bias(self)->list[list[float]]:
         return self._B.tolist()
-# X = np.array([
-#     [1.60, 60.0],
-#     [1.70, 62.5],
-#     [1.90, 80.7],
-#     [1.63, 78.4],
-#     [1.75, 92.0],
-#     [1.81, 93.0],
-#     [1.55, 55.0],
-#     [1.68, 59.0],
-#     [1.72, 65.0],
-#     [1.85, 82.0],
-#     [1.77, 75.0],
-#     [1.80, 88.0],
-#     [1.66, 72.0],
-#     [1.73, 85.0],
-#     [1.69, 90.0],
-#     [1.82, 95.0]
-# ])
-
-# Y = np.array([
-#     0, 0, 0, 1, 1, 1,
-#     0, 0, 0, 0, 0, 1,
-#     1, 1, 1, 1
-# ])
-
-# obese_predictor = SoftmaxLogisticRegression(2, 2)
-# obese_predictor.train(X, Y, np.ones((2)), 5000, 30, print_res=True)
-# print(obese_predictor.predict([1.9, 60]))
-# print(obese_predictor.predict([1.3, 60]))
-# a = np.array([5, 6, 7, 8])
-# b = np.array([1, 1 , 2])
-# c = np.ones((3, 1))
 
 
+param = get_weight("softmax_new")
+sft = SoftmaxLogisticRegression(
+    772, 
+    377,
+    np.array(mean),
+    np.array(std),
+    np.array(param["weight"]), 
+    np.array(param["bias"])
+)
 
-# print(a[b])
+def predict(symptom_list : list[int]) -> list[float]:
+    res = sft.predict(np.array(symptom_list))
+    return res.tolist()[0]

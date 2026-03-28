@@ -57,7 +57,7 @@ def get_symtom(i : int):
         if(train_data[i][0][k] == 1):
             print(symptoms_list[k][0], symptoms_list[k][1])
     
-train_data, test_data = get_data_logistic()
+# train_data, test_data = get_data_logistic()
 
 # get_symtom(481)
     

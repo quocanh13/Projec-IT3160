@@ -1,34 +1,25 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
-from neural_network.neural_network_softmax import NeuralNetwork
-
-def relu(x): return np.maximum(0, x)
-def d_relu(x): return (x > 0).astype(float)
-
-def softmax(Z):
-    Z = Z - np.max(Z, axis=0, keepdims=True)
-    expZ = np.exp(Z)
-    return expZ / np.sum(expZ, axis=0, keepdims=True)
-
-
-nn_predictor = NeuralNetwork(
-    [
-        (300, 377, relu, d_relu),
-        (200, 300, relu, d_relu),
-        (772, 200, softmax, None)
-    ]
-)
-
-nn_predictor.load_weight()
+from neural_network.neural_network_softmax import predict as nn_predict
+from softmax_logistic_regression_new.softmax_logsictic_regression import predict as sft_predict
 
 server = Flask(__name__)
 CORS(server)
 
-@server.route("/softmax", methods=["POST"])
-def softmax_predict():
+@server.route("/predict", methods=["POST"])
+def predict():
+    #Hàm predict nhận vào một list là danh sách triệu chứng (0 / 1 : không / có triệu chứng) và trả về một list[float] là tỷ lệ các bệnh
+    predict_map = {
+        "softmax logistic" : sft_predict, 
+        "neural network" : nn_predict,
+        "naive bayes" : nn_predict,
+        "svm" : nn_predict
+    }
+
     data = request.json
-    res = nn_predictor.predict(np.array(data).reshape((377, 1)))
-    return jsonify(res.flatten().tolist())
+    model = data["model"]
+    symptom_list = data["symptomList"]
+    return predict_map[model](symptom_list)
 
 server.run(host="0.0.0.0", port=5100)

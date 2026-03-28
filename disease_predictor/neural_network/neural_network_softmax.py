@@ -2,7 +2,7 @@ import numpy as np
 import random
 import json
 from datetime import datetime
-from neural_network.get_data import test_data, training_data
+# from neural_network.get_data import test_data, training_data
 
 class NeuralNetwork:
     def __init__(
@@ -142,12 +142,12 @@ class NeuralNetwork:
             output = self._A[self._L0]
             _, q = output.shape
             eps = 1e-15
-            loss = -np.mean(np.log(np.clip(output[self._Y, np.arange(q)], eps, 1)))
-            end = datetime.now()
-            res = self.predict(test_data[0][1])
-            accuracy = np.mean(np.argmax(res, axis=0) == test_data[0][0])
+            # loss = -np.mean(np.log(np.clip(output[self._Y, np.arange(q)], eps, 1)))
+            # end = datetime.now()
+            # res = self.predict(test_data[0][1])
+            # accuracy = np.mean(np.argmax(res, axis=0) == test_data[0][0])
             
-            print(f"Epoch : {i} -- Time : {end - start} -- Loss : {loss} --- Accuracy : {accuracy}", end="")
+            # print(f"Epoch : {i} -- Time : {end - start} -- Loss : {loss} --- Accuracy : {accuracy}", end="")
             if(write_weight):
                 with open("./neural_network/weight.json", "r+") as file:
                     p = json.load(file)
@@ -178,6 +178,27 @@ class NeuralNetwork:
         return [w.tolist() for w in self._W]
     def get_bias_list(self):
         return [b.tolist() for b in self._B]
+
+def relu(x): return np.maximum(0, x)
+def d_relu(x): return (x > 0).astype(float)
+
+def softmax(Z):
+    Z = Z - np.max(Z, axis=0, keepdims=True)
+    expZ = np.exp(Z)
+    return expZ / np.sum(expZ, axis=0, keepdims=True)
+
+nn = NeuralNetwork(
+    [
+        (300, 377, relu, d_relu),
+        (200, 300, relu, d_relu),
+        (772, 200, softmax, None)
+    ]
+)
+nn.load_weight()
+
+def predict(symptom_list : list[int]) -> list[float]:
+    res = nn.predict(np.array(symptom_list).reshape((377, 1)))
+    return res.tolist()
 
 # nn.train(training_data, class_weight, 10, 0.1, write_weight=False)
 
