@@ -11,7 +11,7 @@ interface DiseaseStore{
 
 export const useDiseaseStore = create<DiseaseStore>((set) => ({
     diseaseList,
-    model : "softmax logistic",
+    model : "logistic_regression",
     setRiskPercent(riskList) {
         set(state => ({
             diseaseList : state.diseaseList.map((v, i) => ({...v, riskPercent : riskList[i]}))   

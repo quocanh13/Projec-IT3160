@@ -101,10 +101,12 @@ function DiseaseSection(){
                 </div>
                 <form className='disease-predict-algorithm-selection-form'>
                     <select name="algoritm-selection" id="algoritm-selection" onChange={onChangeModel}>
-                        <option value="softmax logistic">Softmax Logistic Regression</option>
-                        <option value="naive bayes">Naive Bayes</option>
-                        <option value="svm">Support Vector Machine</option>
-                        <option value="neural network">Neural Network</option>
+                        <option value="logistic_regression">Logistic Regression</option>
+                        <option value="softmax_logistic_regression">Softmax Logistic Regression</option>
+                        <option value="knn">K Nearest Neighbors</option>
+                        <option value="naive_bayes">Naive Bayes</option>
+                        <option value="decision_tree">Support Vector Machine</option>
+                        <option value="neural_network">Neural Network</option>
                     </select>
                 </form>
             </div>

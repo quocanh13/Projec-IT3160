@@ -119,4 +119,65 @@ Gọi hàm loss (MSE) là: \[h(\hat{y}) = (\hat{y} - y)^2\]
 \]
 
 \section{Binary Cross Entropy}
+Gọi hàm loss là: \[h(\hat{y}) = -y\ln(\hat{y}) - (1-y)\ln(1-\hat{y})\] 
+
+Đạo hàm của loss theo trọng số là: 
+\noindent Đạo hàm của hàm loss theo trọng số $w_i$ là:
+\[
+    \frac{\partial h}{\partial w_i} = 
+    \frac{\partial h}{\partial \hat{y}} \cdot
+    \frac{\partial \hat{y}}{\partial z} \cdot
+    \frac{\partial z}{\partial w_i} =
+    \left(\frac{-y}{\hat{y}} + \frac{1-y}{1-\hat{y}}\right) \cdot \hat{y}(1 - \hat{y}) \cdot x_i
+\]
+
+\[
+    = \frac{\hat{y} - y}{\hat{y}(1-\hat{y})} \cdot \hat{y}(1 - \hat{y}) \cdot x_i = 
+    (\hat{y} - y) \cdot x_i
+\]
+
+\noindent Đạo hàm của hàm loss theo bias $b$ là:
+\[
+    \frac{\partial h}{\partial b} = 
+    \frac{\partial h}{\partial \hat{y}} \cdot
+    \frac{\partial \hat{y}}{\partial z} \cdot
+    \frac{\partial z}{\partial b} =
+    \left(\frac{-y}{\hat{y}} + \frac{1-y}{1-\hat{y}}\right) \cdot \hat{y}(1 - \hat{y}) \cdot 1
+\]
+
+\[
+    = \frac{\hat{y} - y}{\hat{y}(1-\hat{y})} \cdot \hat{y}(1 - \hat{y}) = 
+    \hat{y} - y
+\]
+
+\noindent Đặt :
+\[\delta = \hat{y} - y\]
+
+\noindent Ta có :
+\[
+    \begin{cases}
+        \frac{\partial h}{\partial w_i} = \delta x_i \\
+        \frac{\partial h}{\partial b} = \delta
+    \end{cases}
+\]
+
+\noindent Biểu diễn dạng ma trận :
+
+\vspace{0.3cm}
+\noindent Ma trận $W, X, B, Z, Y, \hat{Y}$ tương tự như ở trên
+
+\vspace{0.3cm}
+\noindent Ta có ma trận Delta:
+\[
+    \delta = \frac{1}{m} (\hat{Y} - Y) \quad (m \times 1)
+\]
+
+\noindent Suy ra:
+\[
+    \begin{cases}
+        \frac{\partial h}{\partial W} = X^T \cdot \delta \quad (n \times 1) \\
+        \frac{\partial h}{\partial B} = I_m^T \cdot \delta \quad (1 \times 1)
+    \end{cases}
+\]
+
 \end{document}
