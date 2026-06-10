@@ -1,65 +1,56 @@
+import pickle
+import logging
 import numpy as np
-import json
+import argparse
 from datetime import datetime
-from data.data_creation import test_size, training_size, symptoms_list, data_info, class_weight
-from data.get_data import get_data_logistic, get_weight, train_data, test_data
-from disease_predictor.models.softmax_logistic_regression.softmax_logistic_regression import SoftmaxLogisticRegression
+from .model import *
+from .dataset import Dataset
+# python -m disease_predictor.models.softmax_logistic_regression.train
+parser = argparse.ArgumentParser()
+parser.add_argument("--lr", "-lr", type=float, default=0.01)
+parser.add_argument("--epoch", "-ep", type=int, default=10)
 
-def create_X(data: list[list[list[float]]]) -> np.ndarray:
-    X = [ [ value for value in sample ] for disease in data for sample in disease]
-    return np.array(X)
+args = parser.parse_args()
 
-def create_Y() -> np.ndarray:
-    Y = np.zeros(training_size, dtype=int)
-    start = 0
-    for i in range(len(train_data)):
-        length = len(train_data[i])
-        Y[start : (start + length)] = i
-        start += length
-    return Y
+logging.basicConfig(
+    filename="./disease_predictor/models/logistic_regression/train.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
-def create_one_X(i: int):
-    X = [ [value for value in sample] for sample in train_data[i]]
-    return np.array(X)
-def create_one_Y(i: int):
-    length = len(train_data[i])
-    return np.array([i]*length)
+train_dataset = Dataset(True)
+test_dataset = Dataset(False)    
+
+# model = SoftmaxLogisticRegression(weight=np.ones((773, 377))*0.01, bias=np.zeros((1, 773)))
+with open(f"./disease_predictor/models/softmax_logistic_regression/state.pkl", "rb") as f:
+    model = pickle.load(f)
+
+
+for i in range(args.epoch):
+    start = datetime.now()
+
+    Y_hat_train = model(train_dataset.X)
+    Y_hat_test = model(test_dataset.X)
+    loss = softmax_cross_entropy_loss(Y_hat_train, train_dataset.Y)
+    dlw, dlb = sofmax_Cross_entropy_grad(train_dataset.X, Y_hat_train, train_dataset.Y)
     
-
-def train(write_weight = False):
-    X = create_X(train_data)
-    Y = create_Y()
-    param = get_weight("softmax")
-    predictor = SoftmaxLogisticRegression(
-        np.array(param["weight"]), 
-        np.array(param["bias"])
-    )
-    predictor.train(X, Y, class_weight=np.array(class_weight).reshape((772, 1)), epoch=10, alpha=50)
-    if(write_weight):
-        print("Writing")
-        with open("./data/softmax_weight.json", "w") as file:
-            json.dump({"weight" : predictor.get_weight(), "bias" : predictor.get_bias()}, file, indent=4)
-        print("Wrote")
-
-def test(size: list[tuple[int, int]] = []):
-    param = get_weight("softmax")
-    predictor = SoftmaxLogisticRegression(
-        np.array(param["weight"]), 
-        np.array(param["bias"])
-    )
-    for (start, end) in size:
-        for i in range(start, end + 1):
-            res = predictor.predict(np.array(test_data[i][0]).reshape((1, 377)))
-            m = np.argmax(res)
-            print(i, res[0][i], m, res[0][m])
+    model.W -= dlw * args.lr
+    model.B -= dlb * args.lr
     
-start = datetime.now()
+    pred_train = np.argmax(Y_hat_train, axis=1)
+    true_train = np.argmax(train_dataset.Y, axis=1)
+    acc_train = np.mean(pred_train == true_train)
+    percent_train = np.mean((Y_hat_train*train_dataset.Y).sum(axis=1))    
 
-train(write_weight=True)
-test([(0, 10), (100, 110), (500, 510)])
-# Y = create_Y()
-# for i in range(Y.shape[0]):
-#     print(i, Y[i])
+    pred_test = np.argmax(Y_hat_test, axis=1)
+    true_test = np.argmax(test_dataset.Y, axis=1)
+    acc_test = np.mean(pred_test == true_test)   
+    percent_test = np.mean((Y_hat_test*test_dataset.Y).sum(axis=1))
 
-end = datetime.now()
-print(end - start)
+    end = datetime.now()
+    print(f"Ep: {i} - Time: {end - start} - Loss: {loss:.5f} - Accuracy Train: {acc_train:.5f} - Accuracy Test: {acc_test:.5f} - Percent Train: {percent_train:.5f} - Percent Test: {percent_test:.5f}")
+    
+with open(f"./disease_predictor/models/softmax_logistic_regression/state.pkl", "wb") as f:
+    pickle.dump(model, f)
+
+    

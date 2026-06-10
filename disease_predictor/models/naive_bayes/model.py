@@ -1,54 +1,73 @@
-import json
 import numpy as np
+import pickle
+import os
 
 class NaiveBayes:
-    def __init__(
-        self,
-        symptom_size: int | None = None,
-        disease_size: int | None = None,
-        alpha: int | None = None
-    ):
-        if(symptom_size and symptom_size <= 0):
-            raise ValueError("Symptom size must be greater than 0")
-        if(disease_size and disease_size <= 0):
-            raise ValueError("Disease size must be greater than 0")
-        if(alpha and alpha <= 0):
-            raise ValueError("Disease size must be greater than 0")
-        
-        self.symptom_size = symptom_size
-        self.disease_size = disease_size
+    def __init__(self, alpha=1.0):
         self.alpha = alpha
-        self.likelihood = np.zeros((disease_size, symptom_size))
-        self.prior = np.zeros((disease_size))
-        
-    def fit(
-        self, 
-        X: np.ndarray,
-        Y: np.ndarray
-    ):
-        n_samples = X.shape[0]
-        for d in range(self.disease_size):
-            X_d = X[Y == d]
-            self.prior[d] = X_d.shape[0] / n_samples
-            
-            symptom_count = X_d.sum(axis=0)
-            self.likelihood[d] = (symptom_count + self.alpha) / (X_d.shape[0] + self.symptom_size*self.alpha)
-            
-    def save_state(self, path: str):
-        with open(path, "w") as state_file:
-            json.dump({"likelihood" : self.likelihood, "prior" : self.prior}, state_file, indent=2)
-    
-    def load_state(self, path: str):
-        with open(path) as state_file:
-            state = json.load(state_file)
-            self.likelihood = state["likelihood"]
-            self.prior = state["prior"]
+        self.classes = None
+        self.class_log_prior = None
+        self.feature_log_prob = None
+        self.neg_feature_log_prob = None
 
-    def predict(
-        self, 
-        X: np.ndarray
-    ):
-        res = self.likelihood*X
-        res = np.log(res)
-        res = np.sum(res, axis=0) + self.prior
-        return res
+    def fit(self, X, y):
+        n_samples, n_features = X.shape
+        self.classes = np.unique(y)
+        n_classes = len(self.classes)
+        self.class_log_prior = np.zeros(n_classes)
+        self.feature_log_prob = np.zeros((n_classes, n_features))
+        for idx, c in enumerate(self.classes):
+            X_c = X[y == c]
+            self.class_log_prior[idx] = np.log(X_c.shape[0] / n_samples)
+            smoothed_fc = np.sum(X_c, axis=0) + self.alpha
+            smoothed_cc = X_c.shape[0] + 2 * self.alpha
+            self.feature_log_prob[idx, :] = np.log(smoothed_fc / smoothed_cc)
+        self.neg_feature_log_prob = np.log(1 - np.exp(self.feature_log_prob))
+
+    def predict_id(self, X):
+        term1 = np.dot(X, self.feature_log_prob.T)
+        term2 = np.dot(1 - X, self.neg_feature_log_prob.T)
+        posterior_log_prob = self.class_log_prior + term1 + term2
+        return self.classes[np.argmax(posterior_log_prob, axis=1)]
+
+    def predict_proba(self, X, temperature=15.0):
+        term1 = np.dot(X, self.feature_log_prob.T)
+        term2 = np.dot(1 - X, self.neg_feature_log_prob.T)
+        posterior_log_prob = self.class_log_prior + term1 + term2
+        
+        posterior_log_prob = posterior_log_prob / temperature
+        max_log_prob = np.max(posterior_log_prob, axis=1, keepdims=True)
+        exp_prob = np.exp(posterior_log_prob - max_log_prob)
+        probs = exp_prob / np.sum(exp_prob, axis=1, keepdims=True)
+        return probs
+
+# --- BÙA CHÚ CHỐNG LỖI KHI LOAD PKL ---
+class CustomUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if name == 'NaiveBayes':
+            return NaiveBayes
+        return super().find_class(module, name)
+
+# --- LOAD TRỌNG SỐ TỪ FILE PKL ---
+nb = None
+current_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(current_dir, 'naive_bayes_model.pkl')
+
+if os.path.exists(model_path):
+    try:
+        with open(model_path, 'rb') as file:
+            ai_package = CustomUnpickler(file).load()
+            if isinstance(ai_package, dict) and 'model' in ai_package:
+                nb = ai_package['model']
+            else:
+                nb = ai_package
+            print("✅ Đã load thành công file naive_bayes_model.pkl")
+    except Exception as e:
+        print(f"Lỗi load pkl: {e}")
+
+# --- XUẤT API ---
+def predict(symptom_list: list[int]) -> list[float]:
+    if nb is None:
+        return [0.0] * 772
+    res = nb.predict_proba(np.array(symptom_list).reshape(1, -1))
+    return res.tolist()[0]

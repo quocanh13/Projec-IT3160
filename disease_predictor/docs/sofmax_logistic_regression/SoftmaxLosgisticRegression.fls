@@ -1,6 +1,6 @@
-PWD d:\Desktop\Code\Python\disease_prediction\softmax_logistic_regression
+PWD d:\Desktop\Project IT3160\disease_predictor\docs\sofmax_logistic_regression
 INPUT C:\Users\quocanh\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT d:\Desktop\Code\Python\disease_prediction\softmax_logistic_regression\SoftmaxLosgisticRegression.tex
+INPUT d:\Desktop\Project IT3160\disease_predictor\docs\sofmax_logistic_regression\SoftmaxLosgisticRegression.tex
 OUTPUT SoftmaxLosgisticRegression.log
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
@@ -9,6 +9,20 @@ INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\base\size10.clo
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\base\size10.clo
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\base\inputenc.sty
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\base\inputenc.sty
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\base\fontenc.sty
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\base\fontenc.sty
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\vntex\t5enc.def
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\vntex\t5enc.def
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\vntex\t5enc.def
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\vntex\t5enc.dfu
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\vntex\t5enc.dfu
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\vntex\t5enc.dfu
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\vntex\t5cmr.fd
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\vntex\t5cmr.fd
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\vntex\t5cmr.fd
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\tfm\vntex\vnr\vnr10.tfm
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\enumitem\enumitem.sty
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\enumitem\enumitem.sty
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amsmath.sty
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amsmath.sty
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amsopn.sty
@@ -29,8 +43,7 @@ INPUT .\SoftmaxLosgisticRegression.aux
 INPUT .\SoftmaxLosgisticRegression.aux
 INPUT SoftmaxLosgisticRegression.aux
 OUTPUT SoftmaxLosgisticRegression.aux
-INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr12.tfm
-INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\tfm\vntex\vnr\vnr17.tfm
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmex7.tfm
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmex7.tfm
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\tex\latex\amsfonts\umsa.fd
@@ -47,11 +60,7 @@ INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\s
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm5.tfm
 OUTPUT SoftmaxLosgisticRegression.pdf
 INPUT C:\Users\quocanh\AppData\Local\MiKTeX\fonts\map\pdftex\pdftex.map
-INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr12.tfm
-INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
 INPUT SoftmaxLosgisticRegression.aux
-INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb
-INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi10.pfb
@@ -66,5 +75,7 @@ INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr7.pfb
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
 INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
-INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy7.pfb
-INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy7.pfb
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\vntex\vnr\vnr10.pfb
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\vntex\vnr\vnr10.pfb
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\vntex\vnr\vnr17.pfb
+INPUT C:\Users\quocanh\AppData\Local\Programs\MiKTeX\fonts\type1\vntex\vnr\vnr17.pfb

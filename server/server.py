@@ -3,6 +3,8 @@ from flask_cors import CORS
 import numpy as np
 from disease_predictor.models.logistic_regression import predict as logistic_regression_predict
 from disease_predictor.models.knn import predict as knn_predict
+from disease_predictor.models.naive_bayes import predict as naive_bayes_predict
+from disease_predictor.models.softmax_logistic_regression import predict as softmax_logistic_regression_predict
 
 server = Flask(__name__)
 CORS(server)
@@ -12,7 +14,11 @@ def predict():
     #Hàm predict nhận vào một list là danh sách triệu chứng (0 / 1 : không / có triệu chứng) và trả về một list[float] là tỷ lệ các bệnh
     predict_map = {
         "logistic_regression" : logistic_regression_predict,
-        "knn" : knn_predict
+        "knn" : knn_predict,
+        "decision_tree" : logistic_regression_predict,
+        "naive_bayes" : naive_bayes_predict,
+        "neural_network" : logistic_regression_predict,
+        "softmax_logistic_regression": softmax_logistic_regression_predict
     }
 
     data = request.json

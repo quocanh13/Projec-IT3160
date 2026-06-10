@@ -138,7 +138,7 @@ function DiseaseItem({disease} : {disease: Disease}) {
                     <p className='disease-ename'>{disease.ename}</p>
                 </div>
                 <div className='disease-percent-risk-container'>
-                    <p className='disease-percent-risk'>{disease.riskPercent}</p>
+                    <p className='disease-percent-risk'>{disease.riskPercent * 100}</p>
                 </div>
             </div>
         </div>
