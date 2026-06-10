@@ -1,6 +1,7 @@
 - Lần đầu chạy project thực hiện các lệnh sau : 
     + "python -m pip install -r requirement.txt"
-    + "cd web && npm install"
+    + "cd web"
+    + "npm install"
     
 - Chạy frontend server:
     + "cd web" -> Di chuyển terminal vào folder web
@@ -8,7 +9,6 @@
     + Vào [localhost](http://localhost:5000/) để xem web
 
 - Chạy backend server python:
-    + "cd disease_predictor"
     + "python -m server.server"
 
 - Folder ./disease_predictor/ : Source code chứa model
