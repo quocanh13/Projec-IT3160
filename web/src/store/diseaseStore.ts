@@ -13,6 +13,7 @@ export const useDiseaseStore = create<DiseaseStore>((set) => ({
     diseaseList,
     model : "logistic_regression",
     setRiskPercent(riskList) {
+        console.log(riskList)
         set(state => ({
             diseaseList : state.diseaseList.map((v, i) => ({...v, riskPercent : riskList[i]}))   
         }))
