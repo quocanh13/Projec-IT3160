@@ -105,7 +105,7 @@ function DiseaseSection(){
                         <option value="softmax_logistic_regression">Softmax Logistic Regression</option>
                         <option value="knn">K Nearest Neighbors</option>
                         <option value="naive_bayes">Naive Bayes</option>
-                        <option value="decision_tree">Support Vector Machine</option>
+                        <option value="decision_tree">Decision Tree</option>
                         <option value="neural_network">Neural Network</option>
                     </select>
                 </form>

@@ -1,6 +1,6 @@
-from model import DecisionTree
-from dataset import X, Y
-
+from .model import DecisionTree
+from .dataset import X, Y
+# python -m disease_predictor.models.decision_tree.train
 tree = DecisionTree()
 # tree.fit(X, Y)
 # tree.save_state("./disease_predictor/models/decision_tree/state.pkl")
