@@ -41,14 +41,12 @@ class NaiveBayes:
         probs = exp_prob / np.sum(exp_prob, axis=1, keepdims=True)
         return probs
 
-# --- BÙA CHÚ CHỐNG LỖI KHI LOAD PKL ---
 class CustomUnpickler(pickle.Unpickler):
     def find_class(self, module, name):
         if name == 'NaiveBayes':
             return NaiveBayes
         return super().find_class(module, name)
 
-# --- LOAD TRỌNG SỐ TỪ FILE PKL ---
 nb = None
 current_dir = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(current_dir, 'naive_bayes_model.pkl')
@@ -65,7 +63,6 @@ if os.path.exists(model_path):
     except Exception as e:
         print(f"Lỗi load pkl: {e}")
 
-# --- XUẤT API ---
 def predict(symptom_list: list[int]) -> list[float]:
     if nb is None:
         return [0.0] * 772
