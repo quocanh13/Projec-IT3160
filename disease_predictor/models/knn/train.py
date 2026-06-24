@@ -1,17 +1,13 @@
 from disease_predictor.models.knn.model import KNearestNeighbors
-from disease_predictor.models.knn.dataset import X, Y   # X: (247212, 377), Y: (247212,)
-
+from disease_predictor.models.knn.dataset import X_train, Y_train
 import numpy as np
 
-# ── Train ──────────────────────────────────────────────────────────────
 model = KNearestNeighbors(k=5)
-model.fit(X, Y)
+model.fit(X_train, Y_train)
 model.save_state("./disease_predictor/models/knn/state.pkl")
-print("Đã lưu state KNN.")
 
-# ── Test thử ───────────────────────────────────────────────────────────
 sample = [0] * 377
-proba  = model.predict_proba(sample)  # mảng 773 phần tử
+proba  = model.predict_proba(sample) 
 
 top5 = np.argsort(proba)[::-1][:5]
 print("Top-5 bệnh:")

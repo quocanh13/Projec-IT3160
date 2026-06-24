@@ -12,12 +12,6 @@ parser.add_argument("--epoch", "-ep", type=int, default=10)
 
 args = parser.parse_args()
 
-logging.basicConfig(
-    filename="./disease_predictor/models/logistic_regression/train.log",
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
-
 train_dataset = Dataset(True)
 test_dataset = Dataset(False)    
 

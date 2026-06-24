@@ -67,6 +67,7 @@ def test_accuracy():
     print(f"Test Positive Percent : {test_pos_percent}")
     print(f"Test Negative Percent : {test_neg_percent}")
 
+test_accuracy()
     
     
     

@@ -2,15 +2,24 @@ import json
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv("./disease_predictor/dataset/dataset_1/data.csv")
+df_train = pd.read_csv("./disease_predictor/dataset/dataset_1/train_data.csv")
 
-Y = df.iloc[:, 0].to_numpy()                # cột đầu: tên bệnh
-X = df.iloc[:, 1:].to_numpy(dtype=np.int8)  # các cột còn lại: triệu chứng (0/1)
+Y_train = df_train.iloc[:, 0].to_numpy()             
+X_train = df_train.iloc[:, 1:].to_numpy(dtype=np.int8) 
 
 with open("./disease_predictor/dataset/dataset_1/diseases.json") as f:
     diseases = json.load(f)
 
-Y = np.array([diseases[disease] for disease in Y], dtype=np.int32)
+Y_train = np.array([diseases[disease] for disease in Y_train], dtype=np.int32)
 
-# X: (247212, 377)  — 247k sample, 377 triệu chứng
-# Y: (247212,)      — class index của từng bệnh
+
+
+df_test = pd.read_csv("./disease_predictor/dataset/dataset_1/test_data.csv")
+
+Y_test = df_test.iloc[:, 0].to_numpy()             
+X_test = df_test.iloc[:, 1:].to_numpy(dtype=np.int8) 
+
+with open("./disease_predictor/dataset/dataset_1/diseases.json") as f:
+    diseases = json.load(f)
+
+Y_test = np.array([diseases[disease] for disease in Y_test], dtype=np.int32)

@@ -1,4 +1,7 @@
 - Lần đầu chạy project thực hiện các lệnh sau : 
+    + Tải và cài đặt nodejs : https://nodejs.org/en/download
+    + Tải và cài đặt python : https://www.python.org/downloads/
+    + Vào folder chứa project
     + "python -m pip install -r requirement.txt"
     + "cd web"
     + "npm install"
